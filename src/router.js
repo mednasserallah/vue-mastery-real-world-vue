@@ -5,6 +5,7 @@ import EventShow from './views/EventShow.vue';
 import EventCreate from './views/EventCreate.vue';
 import NotFound from './views/NotFound.vue';
 import NetworkIssue from './views/NetworkIssue.vue';
+import Example from './views/Example.vue';
 import NProgress from 'nprogress';
 import store from '@/store/store';
 
@@ -19,6 +20,11 @@ const router = new Router({
             name: 'event-list',
             component: EventList,
             props: true
+        },
+        {
+            path: '/example',
+            name: 'example',
+            component: Example
         },
         {
             path: '/event/create',
