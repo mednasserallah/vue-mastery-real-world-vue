@@ -1,36 +1,30 @@
 <template>
     <div>
         <form @submit.prevent="createEvent">
-            <label>Select a category</label>
-            <select v-model="event.category">
-                <option v-for="cat in categories" :key="cat">{{ cat }}</option>
-            </select>
+            <BaseSelect label="Select a category" :options="categories" v-model="event.category" />
             <h3>Name & describe your event</h3>
-            <div class="field">
-                <label>Title</label>
-                <input v-model="event.title" type="text" placeholder="Add an event title" />
-            </div>
-            <div class="field">
-                <label>Description</label>
-                <input v-model="event.description" type="text" placeholder="Add a description" />
-            </div>
+            <BaseInput type="text" label="Title" v-model="event.title" placeholder="Event Title" />
+            <BaseInput
+                type="text"
+                label="Description"
+                v-model="event.description"
+                placeholder="Add a description"
+            />
             <h3>Where is your event?</h3>
-            <div class="field">
-                <label>Location</label>
-                <input v-model="event.location" type="text" placeholder="Add a location" />
-            </div>
+            <BaseInput
+                type="text"
+                label="Location"
+                v-model="event.location"
+                placeholder="Add a location"
+            />
             <h3>When is your event?</h3>
             <div class="field">
                 <label>Date</label>
                 <datepicker v-model="event.date" placeholder="Select a date" />
             </div>
-            <div class="field">
-                <label>Select a time</label>
-                <select v-model="event.time">
-                    <option v-for="time in times" :key="time">{{ time }}</option>
-                </select>
-            </div>
-            <input type="submit" class="button -fill-gradient" value="Submit" />
+            <BaseSelect label="Select a time" :options="times" v-model="event.time" />
+            <!-- <input type="submit" class="button -fill-gradient" value="Submit" /> -->
+            <BaseButton type="submit" buttonClass="-fill-gradient">Submit</BaseButton>
         </form>
     </div>
 </template>
@@ -38,6 +32,7 @@
 <script>
 import { mapState, mapGetters } from 'vuex';
 import Datepicker from 'vuejs-datepicker';
+import NProgress from 'nprogress';
 
 export default {
     computed: {
@@ -75,6 +70,8 @@ export default {
             };
         },
         createEvent() {
+            NProgress.start();
+
             this.$store
                 .dispatch('createEvent', this.event)
                 .then(() => {
@@ -84,7 +81,9 @@ export default {
                     });
                     this.event = this.createFreshEventObject();
                 })
-                .catch(() => {});
+                .catch(() => {
+                    NProgress.done();
+                });
         }
     }
 };
